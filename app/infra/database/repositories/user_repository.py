@@ -2,50 +2,44 @@ from pydantic.networks import EmailStr
 
 from app.domain.accounts.entities.user import User
 from app.infra.database.models import User as UserModel
-from app.infra.database.sqlalchemy import get_db as db
+from app.infra.database.sqlalchemy import session as db
 
 
-async def fetch(id: int) -> User:
-    user_query = db.query(UserModel).where(UserModel.id == id)
-    result = await user_query.first()
-
-    return User.parse_obj(dict(result)) if result else None
+def fetch(id: int) -> User:
+    return db.query(UserModel).where(UserModel.id == id).first()
 
 
-async def fetch_by_email(email: str) -> User:
-    user_query = db.query(UserModel).where(UserModel.email == email)
-    result = await user_query.first()
-
-    return User.parse_obj(dict(result)) if result else None
+def fetch_by_email(email: str) -> User:
+    return db.query(UserModel).where(UserModel.email == email).first()
 
 
-async def create(email: EmailStr, password_hash: str) -> User:
-    values = {"email": email, "password_hash": password_hash}
+def create(email: EmailStr, password_hash: str) -> User:
+    values = {"email": email, "password": password_hash}
     user = UserModel(**values)
 
     db.add(user)
-    await db.commit()
-    await db.refresh(user)
+    db.commit()
+    db.refresh(user)
 
-    return User.parse_obj(dict(user))
+    return user
 
 
-async def delete_one(id: int) -> None:
+def delete_one(id: int) -> None:
     user_query = db.query(UserModel).where(UserModel.id == id)
-    user = await user_query.first()
+    user = user_query.first()
 
     if user:
         db.delete(user)
-        await db.commit()
+        db.commit()
 
 
-async def update_one(id: int, email: EmailStr, password_hash: str) -> None:
+def update_one(id: int, email: EmailStr, password_hash: str) -> None:
     user_query = db.query(UserModel).where(UserModel.id == id)
-    user = await user_query.first()
+    user = user_query.first()
 
     if user:
         user.email = email
         user.password_hash = password_hash
 
         db.add(user)
-        await db.commit()
+        db.commit()

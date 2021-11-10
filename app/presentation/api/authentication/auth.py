@@ -14,7 +14,9 @@ from app.core.config import get_settings
 from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
 from app.application.account.get_user_services import GetUserServices
-from app.application.authentication.authentication_services import AuthenticationServices
+from app.application.authentication.authentication_services import (
+    AuthenticationServices,
+)
 
 _secret_key, _expire_minutes, _algorithm = attrgetter(
     "JWT_SECRET_KEY", "JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "JWT_ALGORITHM"
@@ -29,7 +31,6 @@ class TokenType(str, Enum):
 
 class Token(BaseModel):
     access_token: str
-    expire: int
     token_type: TokenType = TokenType.bearer
 
     class Config:
@@ -49,8 +50,7 @@ router = APIRouter(default_response_class=JSONResponse)
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=_expire_minutes)
-    to_encode.update({"exp": expire})
-
+    to_encode["exp"] = expire
     return jwt.encode(to_encode, _secret_key, algorithm=_algorithm)
 
 
@@ -69,10 +69,7 @@ def verify_token(token: str, credentials_exceptions):
     return token_data
 
 
-
-async def get_current_user(
-    token: str = Depends(oauth2_scheme)
-) -> User:
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     credentials_exceptions = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -84,15 +81,13 @@ async def get_current_user(
     return user
 
 
-
-@router.post("/token", response_model=TokenData)
-async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends()
+@router.post("/token", response_model=Token)
+def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
 ) -> TokenData:
     username, password = attrgetter("username", "password")(form_data)
     credential = UserCredentials(email=username, password=password)
-    user = await GetUserServices.get_by_credentials(repo, credential)
-
+    user = GetUserServices.get_user_by_credentials(repo, credential)
     credentials_exceptions = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -101,9 +96,14 @@ async def login_for_access_token(
     if not user:
         raise credentials_exceptions
 
-    if not AuthenticationServices.check_password(user, credential.password):
+    if not AuthenticationServices.verify_password(credential.password, user.password):
         raise credentials_exceptions
 
-    access_token = AuthenticationServices.create_access_token(data={"user_id": user.id, "is_active": user.is_active})
+    access_token = create_access_token(
+        data={
+            "user_id": user.id,
+            "is_active": user.is_active,
+        }
+    )
 
     return {"access_token": access_token, "token_type": TokenType.bearer}

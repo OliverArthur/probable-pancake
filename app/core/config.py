@@ -1,6 +1,6 @@
 from typing import Callable
 
-from pydantic import BaseSettings, PostgresDsn, SecretStr
+from pydantic import BaseSettings, PostgresDsn
 
 
 class Config(BaseSettings):
@@ -38,9 +38,9 @@ class Config(BaseSettings):
     )
 
     # Token settings
-    JWT_SECRET_KEY: SecretStr = (
+    JWT_SECRET_KEY: str = \
         "841b88a5cbb69c5b03a39da7abb398aedc3a5b6841d4f025bec8e570e882d7c0"
-    )
+
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     JWT_ALGORITHM: str = "HS256"
 
