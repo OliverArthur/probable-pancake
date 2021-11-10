@@ -10,13 +10,13 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import ExpiredSignatureError, JWSError, jwt
 from pydantic import BaseModel
 
-from app.core.config import get_settings
-from app.domain.accounts.entities.user import User, UserCredentials
-from app.presentation.container import get_dependencies
 from app.application.account.get_user_services import GetUserServices
 from app.application.authentication.authentication_services import (
     AuthenticationServices,
 )
+from app.core.config import get_settings
+from app.domain.accounts.entities.user import User, UserCredentials
+from app.presentation.container import get_dependencies
 
 _secret_key, _expire_minutes, _algorithm = attrgetter(
     "JWT_SECRET_KEY", "JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "JWT_ALGORITHM"

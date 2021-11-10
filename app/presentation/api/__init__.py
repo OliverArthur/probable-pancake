@@ -1,6 +1,6 @@
 from fastapi.applications import FastAPI
 
-from app.presentation.api import accounts, healthcheck, authentication
+from app.presentation.api import accounts, authentication, healthcheck
 
 
 def register_routers(app: FastAPI) -> None:

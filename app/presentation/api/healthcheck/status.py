@@ -10,11 +10,10 @@ router = APIRouter()
 
 
 class StatusEmum(str, Enum):
-    OK = 'OK'
-    ERROR = 'ERROR'
-    CRITICAL = 'CRITICAL'
-    UNKNOWN = 'UNKNOWN'
-
+    OK = "OK"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"
+    UNKNOWN = "UNKNOWN"
 
 
 class HealthCheck(BaseModel):
@@ -24,14 +23,13 @@ class HealthCheck(BaseModel):
     status: StatusEmum = Field(..., description="API current status")
 
 
-
 @router.get(
-    '/',
+    "/",
     response_model=HealthCheck,
     status_code=status.HTTP_200_OK,
-    tags=['Health Check'],
+    tags=["Health Check"],
     summary="Performs health check",
-    description="Performs health check for the API and returns informantion about the running services."
+    description="Performs health check for the API and returns informantion about the running services.",
 )
 def health_check():
     settings = get_settings()
@@ -39,5 +37,5 @@ def health_check():
         title=settings.APP_NAME,
         description=settings.APP_DESCRIPTION,
         version=settings.APP_VERSION,
-        status=StatusEmum.OK
+        status=StatusEmum.OK,
     )

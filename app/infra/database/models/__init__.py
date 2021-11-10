@@ -1,5 +1,3 @@
-__all__ = (
-    "User",
-)
+__all__ = ("User",)
 
 from app.infra.database.models.user.user import User
