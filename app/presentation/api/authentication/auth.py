@@ -6,13 +6,15 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import ExpiredSignatureError, JWSError, jwt
 from pydantic import BaseModel
 
 from app.core.config import get_settings
-from app.domain.accounts.entities import User
-from app.domain.accounts.services import user_service
+from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
+from app.application.account.get_user_services import GetUserServices
+from app.application.authentication.authentication_services import AuthenticationServices
 
 _secret_key, _expire_minutes, _algorithm = attrgetter(
     "JWT_SECRET_KEY", "JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "JWT_ALGORITHM"
@@ -39,7 +41,7 @@ class TokenData(BaseModel):
     is_active: Optional[bool] = None
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter(default_response_class=JSONResponse)
 
@@ -78,5 +80,30 @@ async def get_current_user(
     )
 
     token = verify_token(token, credentials_exceptions)
-    user = await user_service.get_by_id(repo, token.user_id)
+    user = await GetUserServices.get_by_id(repo, token.user_id)
     return user
+
+
+
+@router.post("/token", response_model=TokenData)
+async def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends()
+) -> TokenData:
+    username, password = attrgetter("username", "password")(form_data)
+    credential = UserCredentials(email=username, password=password)
+    user = await GetUserServices.get_by_credentials(repo, credential)
+
+    credentials_exceptions = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    if not user:
+        raise credentials_exceptions
+
+    if not AuthenticationServices.check_password(user, credential.password):
+        raise credentials_exceptions
+
+    access_token = AuthenticationServices.create_access_token(data={"user_id": user.id, "is_active": user.is_active})
+
+    return {"access_token": access_token, "token_type": TokenType.bearer}
