@@ -3,8 +3,6 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
-from app.schemas import Post
-
 pass_regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
 
 
@@ -26,7 +24,6 @@ class UserCredentials(BaseModel):
 # Properties to push to user details via API
 class User(UserBase):
     id: int
-    posts: List[Post] = []
     update_at: Optional[datetime] = Field(default_factory=datetime.utcnow())
 
     class Config:

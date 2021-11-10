@@ -28,11 +28,11 @@ class Config(BaseSettings):
     RELOAD: bool = True
 
     # database environment variables
-    DB_NAME: str = "postgres"
+    DB_NAME: str = "blogoliverarthur"
     DB_USER: str = "postgres"
     DB_PASSWORD: str = "postgres"
     DB_PORT: int = 5432
-    DB_HOST: str = "127.0.0.1"
+    DB_HOST: str = "localhost"
     DB_URL: PostgresDsn = (
         f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )

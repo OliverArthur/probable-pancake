@@ -2,7 +2,11 @@ from fastapi import FastAPI
 from toolz import pipe
 
 from app.core.config import Config
+from app.infra.database.sqlalchemy import Base
+from app.infra.database.sqlalchemy import engine
 from app.presentation.api import register_routers as register_api_routers
+
+Base.metadata.create_all(bind=engine)
 
 
 def create_app(config: Config) -> FastAPI:
@@ -15,6 +19,7 @@ def create_app(config: Config) -> FastAPI:
         redoc_url="/redoc",
         debug=config.DEBUG,
     )
+
 
 def register_middlewares(app: FastAPI) -> FastAPI:
     return app
