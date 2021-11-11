@@ -1,11 +1,11 @@
 from fastapi import HTTPException, status
 
-from app.domain.accounts.interfaces.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import IUserRepo
 
 
 class DeleteUserServices:
     @staticmethod
-    def delete_user(user_repo: UserRepo, user_id: int) -> None:
+    def delete_user(user_repo: IUserRepo, user_id: int) -> None:
         user = user_repo.fetch(user_id)
 
         if not user:

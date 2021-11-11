@@ -4,13 +4,13 @@ from app.application.authentication.authentication_services import (
     AuthenticationServices,
 )
 from app.domain.accounts.entities.user import User, UserCredentials
-from app.domain.accounts.interfaces.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import IUserRepo
 
 
 class RegisterUserServices:
     @staticmethod
     def register(
-        user_repo: UserRepo,
+        user_repo: IUserRepo,
         user_credentials: UserCredentials,
     ) -> User:
 

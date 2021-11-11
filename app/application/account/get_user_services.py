@@ -6,13 +6,13 @@ from app.application.authentication.authentication_services import (
     AuthenticationServices,
 )
 from app.domain.accounts.entities.user import User, UserCredentials
-from app.domain.accounts.interfaces.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import IUserRepo
 
 
 class GetUserServices:
     @staticmethod
     def get_user_by_credentials(
-        user_repo: UserRepo,
+        user_repo: IUserRepo,
         user_credentials: UserCredentials,
     ) -> Optional[User]:
 
@@ -31,7 +31,7 @@ class GetUserServices:
 
     @staticmethod
     def get_user_by_id(
-        user_repo: UserRepo,
+        user_repo: IUserRepo,
         user_id: int,
     ) -> Optional[User]:
         user = user_repo.fetch(user_id)

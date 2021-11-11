@@ -1,3 +1,3 @@
-__all__ = ("UserRepo",)
+__all__ = ("IUserRepo",)
 
-from app.domain.accounts.interfaces.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import IUserRepo
