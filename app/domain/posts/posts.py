@@ -1,10 +1,9 @@
-from typing import Optional
-from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
+from pydantic import BaseModel, Field
 
 from app.domain.accounts.entities import User
-
 
 
 class PostBase(BaseModel):

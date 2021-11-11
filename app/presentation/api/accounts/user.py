@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
 
-from app.application.account.account_services import AccountServices
+from app.application.account import AccountServices
 from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
 

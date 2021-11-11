@@ -1,8 +1,9 @@
-from app.infra.database.sqlalchemy import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+
+from app.infra.database.sqlalchemy import Base
 
 
 class Posts(Base):
