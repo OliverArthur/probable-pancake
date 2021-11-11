@@ -10,10 +10,8 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from jose import ExpiredSignatureError, JWSError, jwt
 from pydantic import BaseModel
 
-from app.application.account.get_user_services import GetUserServices
-from app.application.authentication.authentication_services import (
-    AuthenticationServices,
-)
+from app.application.account import AccountServices
+from app.application.authentication import AuthenticationServices
 from app.core.config import get_settings
 from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
@@ -77,7 +75,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     )
 
     token = verify_token(token, credentials_exceptions)
-    user = await GetUserServices.get_by_id(repo, token.user_id)
+    user = await AccountServices.get_user_by_id(repo, token.user_id)
     return user
 
 
@@ -87,7 +85,7 @@ def login_for_access_token(
 ) -> TokenData:
     username, password = attrgetter("username", "password")(form_data)
     credential = UserCredentials(email=username, password=password)
-    user = GetUserServices.get_user_by_credentials(repo, credential)
+    user = AccountServices.get_user_by_credentials(repo, credential)
     credentials_exceptions = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

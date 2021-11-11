@@ -1,8 +1,9 @@
-from app.database import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+
+from app.infra.database.sqlalchemy import Base
 
 
 class Posts(Base):
@@ -11,6 +12,7 @@ class Posts(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), nullable=False, index=True)
     content = Column(String, nullable=False)
+    image_url = Column(String(200))
     published = Column(Boolean, server_default="FALSE", nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")

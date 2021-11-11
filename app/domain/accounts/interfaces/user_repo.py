@@ -5,7 +5,7 @@ from pydantic.networks import EmailStr
 from app.domain.accounts.entities.user import User
 
 
-class UserRepo(Protocol):
+class IUserRepo(Protocol):
     async def create(self, email: EmailStr, password_hash: str) -> User:
         ...
 
