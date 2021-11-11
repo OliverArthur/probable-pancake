@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, cast
 
-from app.domain.accounts.protocols import UserRepo
+from app.domain.accounts.interfaces import UserRepo
 from app.infra.database.repositories import user_repository
 
 

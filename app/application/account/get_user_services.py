@@ -6,7 +6,7 @@ from app.application.authentication.authentication_services import (
     AuthenticationServices,
 )
 from app.domain.accounts.entities.user import User, UserCredentials
-from app.domain.accounts.protocols.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import UserRepo
 
 
 class GetUserServices:

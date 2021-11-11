@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from app.domain.accounts.protocols.user_repo import UserRepo
+from app.domain.accounts.interfaces.user_repo import UserRepo
 
 
 class DeleteUserServices:
