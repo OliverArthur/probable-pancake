@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
 
-from app.application.account.get_user_services import GetUserServices
-from app.application.account.register_user_services import RegisterUserServices
+from app.application.account.account_services import AccountServices
 from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
 
@@ -13,12 +12,12 @@ router = APIRouter(default_response_class=JSONResponse)
 @router.post("", response_model=User, status_code=status.HTTP_201_CREATED)
 def create_user(response: JSONResponse, credentials: UserCredentials):
     try:
-        user = GetUserServices.get_user_by_credentials(repo, credentials)
+        user = AccountServices.get_user_by_credentials(repo, credentials)
         if user:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT, detail="Email already exists."
             )
-        return RegisterUserServices.register(repo, credentials)
+        return AccountServices.register_user(repo, credentials)
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request"
