@@ -26,8 +26,8 @@ class PostPublished(PostBase):
 class Post(PostBase):
     id: int
     owner: Optional[User] = None
-    created_at: Optional[datetime] = Field(None, alias='createdAt')
-    updated_at: Optional[datetime] = Field(None, alias='updatedAt')
+    created_at: Optional[datetime] = Field(None, alias="createdAt")
+    updated_at: Optional[datetime] = Field(None, alias="updatedAt")
 
     class Config:
         orm_mode = True

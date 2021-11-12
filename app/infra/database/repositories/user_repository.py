@@ -24,22 +24,11 @@ def create(email: EmailStr, password_hash: str) -> User:
     return user
 
 
-def delete_one(id: int) -> None:
-    user_query = db.query(UserModel).where(UserModel.id == id)
-    user = user_query.first()
+def update_me(user: User, values: dict) -> User:
+    for k, v in values:
+        setattr(user, k, v)
 
-    if user:
-        db.delete(user)
-        db.commit()
+    db.commit()
+    db.refresh(user)
 
-
-def update_one(id: int, email: EmailStr, password_hash: str) -> None:
-    user_query = db.query(UserModel).where(UserModel.id == id)
-    user = user_query.first()
-
-    if user:
-        user.email = email
-        user.password_hash = password_hash
-
-        db.add(user)
-        db.commit()
+    return user

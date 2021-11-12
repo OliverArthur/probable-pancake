@@ -24,7 +24,7 @@ class Config(BaseSettings):
 
     # Server settings.
     PORT: int = 8080
-    HOST: str = "127.0.0.1"
+    HOST: str = "localhost"
     RELOAD: bool = True
 
     # database environment variables
