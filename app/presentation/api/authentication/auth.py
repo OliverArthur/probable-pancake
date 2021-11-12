@@ -67,7 +67,7 @@ def verify_token(token: str, credentials_exceptions):
     return token_data
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     credentials_exceptions = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -75,8 +75,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     )
 
     token = verify_token(token, credentials_exceptions)
-    user = await AccountServices.get_user_by_id(repo, token.user_id)
-    return user
+    return AccountServices.get_user_by_id(repo, token.user_id)
 
 
 @router.post("/token", response_model=Token)
@@ -85,7 +84,7 @@ def login_for_access_token(
 ) -> TokenData:
     username, password = attrgetter("username", "password")(form_data)
     credential = UserCredentials(email=username, password=password)
-    user = AccountServices.get_user_by_credentials(repo, credential)
+    user = AccountServices.verify_user_by_credentials(repo, credential)
     credentials_exceptions = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

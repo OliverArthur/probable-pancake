@@ -21,6 +21,10 @@ class UserCredentials(BaseModel):
     password: str = Field(..., min_length=8, max_length=128, regex=pass_regex)
 
 
+class UserUpdateMe(BaseModel):
+    full_name: Optional[str] = None
+
+
 # Properties to push to user details via API
 class User(UserBase):
     id: int

@@ -1,5 +1,3 @@
-__all__ = (
-    "AccountServices",
-)
+__all__ = ("AccountServices",)
 
 from app.application.account.account_services import AccountServices
