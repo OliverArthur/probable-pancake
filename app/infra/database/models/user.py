@@ -1,8 +1,7 @@
-from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.sql.expression import text
-from sqlalchemy.sql.sqltypes import TIMESTAMP
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
+from sqlalchemy.sql import func
 
-from app.infra.database.sqlalchemy import Base
+from app.infra.database.base_class import Base
 
 
 class User(Base):
@@ -12,11 +11,13 @@ class User(Base):
     email = Column(String(100), nullable=False, unique=True, index=True)
     password = Column(String(100), nullable=False)
     full_name = Column(String(100))
-    is_active = Column(Boolean, server_default="TRUE", nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(
-        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+        DateTime(timezone=True),
+        nullable=False,
+        default=func.now(),
     )
-    updated_at = Column(TIMESTAMP(timezone=True), server_onupdate=text("now()"))
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     def __init__(self, email, password):
         self.email = email

@@ -1,8 +1,8 @@
 from pydantic.networks import EmailStr
 
 from app.domain.accounts.entities.user import User
-from app.infra.database.models import User as UserModel
-from app.infra.database.sqlalchemy import session as db
+from app.infra.database.models.user import User as UserModel
+from app.infra.database.sqlalchemy import db
 
 
 def fetch(id: int) -> User:
