@@ -10,12 +10,17 @@ class PostBase(BaseModel):
     title: str
     content: str
     image_url: Optional[str] = None
-    published: bool = False
 
 
 class PostCreate(PostBase):
     title: str
     content: str
+
+
+class PostUpdate(PostBase):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 class PostPublished(PostBase):
@@ -28,6 +33,7 @@ class Post(PostBase):
     owner: Optional[User] = None
     created_at: Optional[datetime] = Field(None, alias="createdAt")
     updated_at: Optional[datetime] = Field(None, alias="updatedAt")
+    published: bool = False
 
     class Config:
         orm_mode = True

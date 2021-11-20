@@ -12,7 +12,11 @@ class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
     is_active: Optional[bool] = True
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow())
+    created_at: Optional[datetime] = Field(
+        default_factory=datetime.utcnow(),
+        description="Date and time of user creation",
+        alias="created_at",
+    )
 
 
 # Properties to receive on user creation via API
@@ -28,7 +32,11 @@ class UserUpdateMe(BaseModel):
 # Properties to push to user details via API
 class User(UserBase):
     id: int
-    update_at: Optional[datetime] = Field(default_factory=datetime.utcnow())
+    update_at: Optional[datetime] = Field(
+        default_factory=datetime.utcnow(),
+        alias="updated_at",
+        description="Date and time of user update",
+    )
 
     class Config:
         allow_mutation = False
