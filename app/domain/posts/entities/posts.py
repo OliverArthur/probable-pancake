@@ -3,37 +3,38 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from app.domain.accounts.entities import User
+from app.domain.accounts.entities.user import User
 
 
-class PostBase(BaseModel):
+class PostsBase(BaseModel):
     title: str
     content: str
     image_url: Optional[str] = None
 
 
-class PostCreate(PostBase):
+class PostsCreate(PostsBase):
     title: str
     content: str
 
 
-class PostUpdate(PostBase):
+class PostsUpdate(PostsBase):
     title: Optional[str] = None
     content: Optional[str] = None
     image_url: Optional[str] = None
 
 
-class PostPublished(PostBase):
+class PostsPublished(PostsBase):
     id: int
     published: bool
 
 
-class Post(PostBase):
+class Posts(PostsBase):
     id: int
     owner: Optional[User] = None
-    created_at: Optional[datetime] = Field(None, alias="createdAt")
-    updated_at: Optional[datetime] = Field(None, alias="updatedAt")
+    created_at: Optional[datetime] = Field(None, alias="created_at")
+    updated_at: Optional[datetime] = Field(None, alias="updated_at")
     published: bool = False
+    owner: Optional[User] = None
 
     class Config:
         orm_mode = True
