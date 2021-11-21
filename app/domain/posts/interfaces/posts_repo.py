@@ -10,5 +10,10 @@ class IPostsRepo(Protocol):
     async def fetch(self, id: int) -> Posts:
         ...
 
-    async def fetch_all(self, page: int = 1, per_page: int = 10) -> list[Posts]:
+    async def search(
+        self,
+        page: int = 1,
+        per_page: int = 10,
+        search: str = "",
+    ) -> list[Posts]:
         ...
