@@ -17,3 +17,6 @@ class IPostsRepo(Protocol):
         search: str = "",
     ) -> list[Posts]:
         ...
+
+    async def update(self, id: int, data: dict, user_id: int) -> Posts:
+        ...

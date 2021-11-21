@@ -26,3 +26,17 @@ def create(data: Posts, user_id: int) -> Posts:
     db.refresh(posts)
 
     return posts
+
+
+def update(posts_id: int, values: dict, user_id: int) -> Posts:
+    posts = fetch(posts_id)
+    if posts.owner_id != user_id:
+        return None
+
+    for key, value in values:
+        setattr(posts, key, value)
+
+    db.commit()
+    db.refresh(posts)
+
+    return posts
