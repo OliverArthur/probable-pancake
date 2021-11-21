@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 
 from app.application.posts import PostsServices
 from app.domain.accounts.entities.user import UserCredentials
-from app.domain.posts.entities.posts import Posts, PostsCreate
+from app.domain.posts.entities.posts import Posts, PostsCreate, PostsUpdate
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
 
@@ -54,5 +54,28 @@ def create_post(
         user_id = current_user.id
         post = PostsServices.create_post(repo, post, user_id)
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+    return post
+
+
+@router.put("/{post_id}", response_model=Posts, status_code=status.HTTP_200_OK)
+def update_post(
+    post_id: int,
+    post: PostsUpdate,
+    current_user: UserCredentials = Depends(get_current_user),
+) -> Posts:
+    """
+    Update a post
+    """
+    try:
+        user_id = current_user.id
+        post = PostsServices.update_post(repo, post_id, post, user_id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
     return post

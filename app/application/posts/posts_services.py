@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import HTTPException, status
 
-from app.domain.posts.entities.posts import Posts, PostsCreate
+from app.domain.posts.entities.posts import Posts, PostsCreate, PostsUpdate
 from app.domain.posts.interfaces.posts_repo import IPostsRepo
 
 
@@ -59,3 +59,24 @@ class PostsServices(ABC):
         Create new post
         """
         return posts_repo.create(posts_create, user_id)
+
+    @classmethod
+    def update_post(
+        self,
+        posts_repo: IPostsRepo,
+        post_id: int,
+        posts_update: PostsUpdate,
+        user_id: int,
+    ) -> Posts:
+        """
+        Update post
+        """
+        post = posts_repo.update(post_id, posts_update, user_id)
+
+        if not post:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Posts not found",
+            )
+
+        return post
