@@ -80,3 +80,43 @@ class PostsServices(ABC):
             )
 
         return post
+
+    @classmethod
+    def published_post(
+        self,
+        posts_repo: IPostsRepo,
+        post_id: int,
+        user_id: int,
+    ) -> Posts:
+        """
+        Publish post
+        """
+        post = posts_repo.published(post_id, user_id)
+
+        if not post:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Posts not found",
+            )
+
+        return post
+
+    @classmethod
+    def unpublish_post(
+        self,
+        posts_repo: IPostsRepo,
+        post_id: int,
+        user_id: int,
+    ) -> Posts:
+        """
+        Unpublish post
+        """
+        post = posts_repo.unpublish(post_id, user_id)
+
+        if not post:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Posts not found",
+            )
+
+        return post

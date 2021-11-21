@@ -79,3 +79,41 @@ def update_post(
             detail=str(e),
         )
     return post
+
+
+@router.put("/{post_id}/publish", status_code=status.HTTP_200_OK)
+def publish_post(
+    post_id: int,
+    current_user: UserCredentials = Depends(get_current_user),
+) -> dict:
+    """
+    Published a post
+    """
+    try:
+        user_id = current_user.id
+        PostsServices.published_post(repo, post_id, user_id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+    return {"message": f"Post {post_id} published"}
+
+
+@router.put("/{post_id}/unpublish", status_code=status.HTTP_200_OK)
+def unpublish_post(
+    post_id: int,
+    current_user: UserCredentials = Depends(get_current_user),
+) -> dict:
+    """
+    Unpublished a post
+    """
+    try:
+        user_id = current_user.id
+        PostsServices.unpublish_post(repo, post_id, user_id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+    return {"message": f"Post {post_id} unpublished"}

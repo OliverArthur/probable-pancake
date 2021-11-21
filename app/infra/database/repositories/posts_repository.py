@@ -40,3 +40,27 @@ def update(posts_id: int, values: dict, user_id: int) -> Posts:
     db.refresh(posts)
 
     return posts
+
+
+def published(posts_id: int, user_id: int) -> bool:
+    posts = fetch(posts_id)
+    if posts.owner_id != user_id:
+        return False
+
+    posts.published = True
+    db.commit()
+    db.refresh(posts)
+
+    return True
+
+
+def unpublish(posts_id: int, user_id: int) -> bool:
+    posts = fetch(posts_id)
+    if posts.owner_id != user_id:
+        return False
+
+    posts.published = False
+    db.commit()
+    db.refresh(posts)
+
+    return True
