@@ -28,11 +28,17 @@ class PostsServices(ABC):
         return post
 
     @classmethod
-    def get_posts(cls, posts_repo: IPostsRepo) -> List[Posts]:
+    def get_posts(
+        cls,
+        posts_repo: IPostsRepo,
+        page: int = 1,
+        per_page: int = 10,
+        search: str = "",
+    ) -> List[Posts]:
         """
         Get all posts
         """
-        posts = posts_repo.fetch_all()
+        posts = posts_repo.search(page, per_page, search)
 
         if not posts:
             raise HTTPException(

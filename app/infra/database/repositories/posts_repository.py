@@ -7,8 +7,14 @@ def fetch(id: int) -> Posts:
     return db.query(PostsModel).filter(PostsModel.id == id).first()
 
 
-def fetch_all() -> list:
-    return db.query(PostsModel).all()
+def search(page: int, per_page: int, search: str = "") -> list:
+    return (
+        db.query(PostsModel)
+        .filter(PostsModel.title.contains(search))
+        .limit(per_page)
+        .offset((page - 1) * per_page)
+        .all()
+    )
 
 
 def create(data: Posts, user_id: int) -> Posts:

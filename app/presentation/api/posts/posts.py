@@ -27,12 +27,13 @@ def get_post(post_id: int):
 def get_posts(
     page: int = 1,
     per_page: int = 10,
+    search: str = "",
 ) -> List[Posts]:
     """
     Get all posts
     """
     try:
-        posts = PostsServices.get_posts(repo)
+        posts = PostsServices.get_posts(repo, page, per_page, search)
     except HTTPException as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
