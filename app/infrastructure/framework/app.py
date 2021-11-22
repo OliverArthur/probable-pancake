@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from toolz import pipe
 
-from app.core.config import Config
+from app.infrastructure.framework.config import Config
 from app.presentation.api import register_routers as register_api_routers
 
 

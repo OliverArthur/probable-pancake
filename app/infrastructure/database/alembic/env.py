@@ -3,7 +3,7 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from app.core.config import get_settings
+from app.infrastructure.framework.config import get_settings
 
 _SETTINGS = get_settings()
 
@@ -20,7 +20,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app.infra.database.base import Base  # noqa
+from app.infrastructure.database.base import Base  # noqa
 
 # add your model's MetaData object here
 # for 'autogenerate' support

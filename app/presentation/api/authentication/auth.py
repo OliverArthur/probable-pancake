@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from app.application.account import AccountServices
 from app.application.authentication import AuthenticationServices
-from app.core.config import get_settings
+from app.infrastructure.framework.config import get_settings
 from app.domain.accounts.entities.user import User, UserCredentials
 from app.presentation.container import get_dependencies
 

@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app.infra.database.base_class import Base
+from app.infrastructure.database.base_class import Base
 
 
 class Posts(Base):

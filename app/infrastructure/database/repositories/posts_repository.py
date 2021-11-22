@@ -1,6 +1,6 @@
 from app.domain.posts.entities.posts import Posts
-from app.infra.database.models.posts import Posts as PostsModel
-from app.infra.database.sqlalchemy import db
+from app.infrastructure.database.models.posts import Posts as PostsModel
+from app.infrastructure.database.sqlalchemy import db
 
 
 def fetch(id: int) -> Posts:

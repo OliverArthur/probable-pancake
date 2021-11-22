@@ -3,7 +3,7 @@ from typing import Callable, cast
 
 from app.domain.accounts.interfaces import IUserRepo
 from app.domain.posts.interfaces import IPostsRepo
-from app.infra.database.repositories import posts_repository, user_repository
+from app.infrastructure.database.repositories import posts_repository, user_repository
 
 
 @dataclass(frozen=True)
