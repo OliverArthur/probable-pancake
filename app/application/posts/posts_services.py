@@ -52,13 +52,24 @@ class PostsServices(ABC):
     def create_post(
         self,
         posts_repo: IPostsRepo,
-        posts_create: PostsCreate,
+        data: PostsCreate,
         user_id: int,
     ) -> Posts:
         """
         Create new post
         """
-        return posts_repo.create(posts_create, user_id)
+        try:
+            if len(data.title) == 0 or len(data.content) == 0:
+                raise ValueError("Title and content are required")
+
+            new_post = posts_repo.create(data, user_id)
+
+        except (ValueError, AttributeError, TypeError) as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
+            )
+        return new_post
 
     @classmethod
     def update_post(
@@ -71,15 +82,28 @@ class PostsServices(ABC):
         """
         Update post
         """
-        post = posts_repo.update(post_id, posts_update, user_id)
+        try:
+            post = posts_repo.fetch(post_id)
+            post_updated = posts_repo.update(post_id, posts_update, user_id)
 
-        if not post:
+            if post is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Posts not found",
+                )
+
+            if user_id != post.owner_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"You are not allowed to update this post: {post.title}",
+                )
+        except (ValueError, AttributeError) as error:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid data: {error}",
             )
 
-        return post
+        return post_updated
 
     @classmethod
     def published_post(
