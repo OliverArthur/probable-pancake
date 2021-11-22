@@ -40,7 +40,7 @@ class TokenData(BaseModel):
     is_active: Optional[bool] = None
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/authentication/token")
 
 router = APIRouter(default_response_class=JSONResponse)
 
