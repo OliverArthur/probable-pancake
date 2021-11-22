@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.sql import func
 
-from app.infra.database.base_class import Base
+from app.infrastructure.database.base_class import Base
 
 
 class User(Base):

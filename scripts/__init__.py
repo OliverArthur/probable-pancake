@@ -1,4 +1,4 @@
-from app.core.server import start_server
+from app.infrastructure.framework.server import start_server
 
 
 def server():
