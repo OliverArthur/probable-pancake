@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
-
 from app.application.vote.vote_services import VoteServices
 from app.domain.accounts.entities.user import UserCredentials
 from app.domain.vote.entities.vote import VoteCreate
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
-
 
 repo = get_dependencies().vote_repo
 post_repo = get_dependencies().posts_repo

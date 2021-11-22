@@ -1,6 +1,5 @@
 from app.domain.vote.entities.vote import Vote, VoteCreate
 from app.infrastructure.database.models.vote import Vote as VoteModel
-
 from app.infrastructure.database.sqlalchemy import db
 
 

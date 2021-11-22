@@ -2,8 +2,9 @@ from abc import ABC
 
 from fastapi import HTTPException, status
 
-from app.domain.vote.interfaces.vote_repo import IVoteRepo
 from app.domain.posts.interfaces.posts_repo import IPostsRepo
+from app.domain.vote.interfaces.vote_repo import IVoteRepo
+
 
 class VoteServices(ABC):
     @classmethod

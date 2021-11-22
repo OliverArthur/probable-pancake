@@ -12,8 +12,8 @@ from pydantic import BaseModel
 
 from app.application.account import AccountServices
 from app.application.authentication import AuthenticationServices
-from app.infrastructure.framework.config import get_settings
 from app.domain.accounts.entities.user import User, UserCredentials
+from app.infrastructure.framework.config import get_settings
 from app.presentation.container import get_dependencies
 
 _secret_key, _expire_minutes, _algorithm = attrgetter(
