@@ -64,3 +64,12 @@ def unpublish(posts_id: int, user_id: int) -> bool:
     db.refresh(posts)
 
     return True
+
+
+def delete(posts_id: int, user_id: int) -> bool:
+    posts = fetch(posts_id)
+    if posts.owner_id != user_id:
+        return False
+
+    db.delete(posts)
+    db.commit()
