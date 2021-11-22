@@ -70,14 +70,8 @@ def update_post(
     """
     Update a post
     """
-    try:
-        user_id = current_user.id
-        post = PostsServices.update_post(repo, post_id, post, user_id)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
+    user_id = current_user.id
+    post = PostsServices.update_post(repo, post_id, post, user_id)
     return post
 
 
@@ -89,14 +83,8 @@ def publish_post(
     """
     Published a post
     """
-    try:
-        user_id = current_user.id
-        PostsServices.published_post(repo, post_id, user_id)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
+    user_id = current_user.id
+    PostsServices.published_post(repo, post_id, user_id)
     return {"message": f"Post {post_id} published"}
 
 
@@ -108,14 +96,8 @@ def unpublish_post(
     """
     Unpublished a post
     """
-    try:
-        user_id = current_user.id
-        PostsServices.unpublish_post(repo, post_id, user_id)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
+    user_id = current_user.id
+    PostsServices.unpublish_post(repo, post_id, user_id)
     return {"message": f"Post {post_id} unpublished"}
 
 
