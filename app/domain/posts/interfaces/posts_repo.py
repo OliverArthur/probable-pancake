@@ -1,7 +1,5 @@
 from typing import Protocol
 
-from sqlalchemy.sql.sqltypes import Boolean
-
 from app.domain.posts.entities.posts import Posts
 
 

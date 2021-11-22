@@ -4,6 +4,8 @@ from dotenv import dotenv_values
 from pydantic import BaseSettings, PostgresDsn
 
 env = dotenv_values(".env")
+
+
 class Config(BaseSettings):
     """
     This class is used to store the configuration of the application.
