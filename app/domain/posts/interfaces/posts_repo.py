@@ -28,3 +28,6 @@ class IPostsRepo(Protocol):
 
     async def unpublish(self, id: int, user_id: int) -> bool:
         ...
+
+    async def delete(self, id: int, user_id: int) -> None:
+        ...

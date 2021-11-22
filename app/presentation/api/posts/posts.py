@@ -117,3 +117,15 @@ def unpublish_post(
             detail=str(e),
         )
     return {"message": f"Post {post_id} unpublished"}
+
+
+@router.delete("/{post_id}", status_code=status.HTTP_200_OK)
+def delete_post(
+    post_id: int,
+    current_user: UserCredentials = Depends(get_current_user),
+) -> None:
+    """
+    Delete a post
+    """
+    user_id = current_user.id
+    PostsServices.delete_post(repo, post_id, user_id)

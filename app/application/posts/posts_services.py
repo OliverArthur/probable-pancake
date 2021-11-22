@@ -120,3 +120,25 @@ class PostsServices(ABC):
             )
 
         return post
+
+    @classmethod
+    def delete_post(
+        self,
+        posts_repo: IPostsRepo,
+        post_id: int,
+        user_id: int,
+    ) -> bool:
+        """
+        Delete post
+        """
+        post = posts_repo.fetch(post_id)
+
+        if not post:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Posts not found",
+            )
+
+        posts_repo.delete(post_id, user_id)
+
+        return True
