@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from toolz import pipe
 
 from app.infrastructure.framework.config import Config
@@ -18,6 +19,14 @@ def create_app(config: Config) -> FastAPI:
 
 
 def register_middlewares(app: FastAPI) -> FastAPI:
+    config = Config()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=config.CORS_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
+        allow_headers=[""],
+    )
     return app
 
 
