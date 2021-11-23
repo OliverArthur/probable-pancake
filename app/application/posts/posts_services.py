@@ -50,7 +50,7 @@ class PostsServices(ABC):
 
     @classmethod
     def create_post(
-        self,
+        cls,
         posts_repo: IPostsRepo,
         data: PostsCreate,
         user_id: int,
@@ -73,7 +73,7 @@ class PostsServices(ABC):
 
     @classmethod
     def update_post(
-        self,
+        cls,
         posts_repo: IPostsRepo,
         post_id: int,
         posts_update: PostsUpdate,
@@ -107,7 +107,7 @@ class PostsServices(ABC):
 
     @classmethod
     def published_post(
-        self,
+        cls,
         posts_repo: IPostsRepo,
         post_id: int,
         user_id: int,
@@ -127,7 +127,7 @@ class PostsServices(ABC):
 
     @classmethod
     def unpublish_post(
-        self,
+        cls,
         posts_repo: IPostsRepo,
         post_id: int,
         user_id: int,
@@ -147,7 +147,7 @@ class PostsServices(ABC):
 
     @classmethod
     def delete_post(
-        self,
+        cls,
         posts_repo: IPostsRepo,
         post_id: int,
         user_id: int,
