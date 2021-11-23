@@ -17,14 +17,13 @@ class PostsServices(ABC):
         """
         Get post by id
         """
-        post = posts_repo.fetch(post_id)
-
-        if not post:
+        try:
+            post = posts_repo.fetch(post_id)
+        except (ValueError, AttributeError, TypeError) as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
             )
-
         return post
 
     @classmethod
@@ -38,14 +37,10 @@ class PostsServices(ABC):
         """
         Get all posts
         """
-        posts = posts_repo.search(page, per_page, search)
-
-        if not posts:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
-            )
-
+        try:
+            posts = posts_repo.search(page, per_page, search)
+        except (ValueError, AttributeError, TypeError) as e:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
         return posts
 
     @classmethod
@@ -59,8 +54,6 @@ class PostsServices(ABC):
         Create new post
         """
         try:
-            if len(data.title) == 0 or len(data.content) == 0:
-                raise ValueError("Title and content are required")
 
             new_post = posts_repo.create(data, user_id)
 
@@ -83,24 +76,11 @@ class PostsServices(ABC):
         Update post
         """
         try:
-            post = posts_repo.fetch(post_id)
             post_updated = posts_repo.update(post_id, posts_update, user_id)
-
-            if post is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Posts not found",
-                )
-
-            if user_id != post.owner_id:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail=f"You are not allowed to update this post: {post.title}",
-                )
-        except (ValueError, AttributeError) as error:
+        except (ValueError, AttributeError, TypeError) as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid data: {error}",
+                detail=str(e),
             )
 
         return post_updated
@@ -115,34 +95,33 @@ class PostsServices(ABC):
         """
         Publish post
         """
-        post = posts_repo.published(post_id, user_id)
-
-        if not post:
+        try:
+            post = posts_repo.published(post_id, user_id)
+        except (ValueError, AttributeError, TypeError) as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
             )
 
         return post
 
     @classmethod
-    def unpublish_post(
+    def unpublished_post(
         cls,
         posts_repo: IPostsRepo,
         post_id: int,
         user_id: int,
     ) -> Posts:
         """
-        Unpublish post
+        Unpublished post
         """
-        post = posts_repo.unpublish(post_id, user_id)
-
-        if not post:
+        try:
+            post = posts_repo.unpublished(post_id, user_id)
+        except (ValueError, AttributeError, TypeError) as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
             )
-
         return post
 
     @classmethod
@@ -155,14 +134,11 @@ class PostsServices(ABC):
         """
         Delete post
         """
-        post = posts_repo.fetch(post_id)
-
-        if not post:
+        try:
+            posts_repo.delete(post_id, user_id)
+        except (ValueError, AttributeError, TypeError) as e:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Posts not found",
+                detail=str(e),
             )
-
-        posts_repo.delete(post_id, user_id)
-
         return True

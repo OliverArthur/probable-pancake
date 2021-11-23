@@ -24,12 +24,12 @@ router = APIRouter(default_response_class=JSONResponse)
     status_code=status.HTTP_200_OK,
 )
 def get_post(post_id: int):
-    post = PostsServices.get_post(repo, post_id)
-    if post is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"
-        )
-    return post
+    """get a single post by id
+
+    :param post_id: id of the post
+    :return: Posts entity
+    """
+    return PostsServices.get_post(repo, post_id)
 
 
 @router.get(
@@ -42,17 +42,14 @@ def get_posts(
     per_page: int = 10,
     search: str = "",
 ) -> List[Posts]:
+    """Get a list of posts
+
+    :param page: initial page to show for the pagination
+    :param per_page: the number of posts to show per page
+    :param search: the terms to search a posts.
+    :return: List[Posts]
     """
-    Get all posts
-    """
-    try:
-        posts = PostsServices.get_posts(repo, page, per_page, search)
-    except HTTPException as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
-    return posts
+    return PostsServices.get_posts(repo, page, per_page, search)
 
 
 @router.post("/", response_model=Posts, status_code=status.HTTP_201_CREATED)
@@ -60,17 +57,14 @@ def create_post(
     post: PostsCreate,
     current_user: UserCredentials = Depends(get_current_user),
 ) -> Posts:
+    """Create a new post
+
+    :param post: payload to create the post, title and content are required fields
+    :param current_user: the owner of the posts
+    :return: Post entity
     """
-    Create a new post
-    """
-    try:
-        user_id = current_user.id
-        post = PostsServices.create_post(repo, post, user_id)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
-        )
+    user_id = current_user.id
+    post = PostsServices.create_post(repo, post, user_id)
     return post
 
 
@@ -80,8 +74,12 @@ def update_post(
     post: PostsUpdate,
     current_user: UserCredentials = Depends(get_current_user),
 ) -> Posts:
-    """
-    Update a post
+    """Update a posts
+
+    :param post_id: the post id to be updated
+    :param post: the new post data.
+    :param current_user: the owner of the post
+    :return: Post entity
     """
     user_id = current_user.id
     post = PostsServices.update_post(repo, post_id, post, user_id)
@@ -93,34 +91,43 @@ def publish_post(
     post_id: int,
     current_user: UserCredentials = Depends(get_current_user),
 ) -> dict:
-    """
-    Published a post
+    """Published a post
+
+    :param post_id: the post id to be published
+    :param current_user: the owner of the post
+    :return: dict
     """
     user_id = current_user.id
     PostsServices.published_post(repo, post_id, user_id)
     return {"message": f"Post {post_id} published"}
 
 
-@router.put("/{post_id}/unpublish", status_code=status.HTTP_200_OK)
-def unpublish_post(
+@router.put("/{post_id}/unpublished", status_code=status.HTTP_200_OK)
+def unpublished_post(
     post_id: int,
     current_user: UserCredentials = Depends(get_current_user),
 ) -> dict:
-    """
-    Unpublished a post
+    """Unpublished a post
+
+    :param post_id: the post id to be unpublished
+    :param current_user: the owner of the post
+    :return: dict
     """
     user_id = current_user.id
-    PostsServices.unpublish_post(repo, post_id, user_id)
+    PostsServices.unpublished_post(repo, post_id, user_id)
     return {"message": f"Post {post_id} unpublished"}
 
 
-@router.delete("/{post_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(
     post_id: int,
     current_user: UserCredentials = Depends(get_current_user),
 ) -> None:
-    """
-    Delete a post
+    """Delete a post
+
+    :param post_id: the post id to be deleted
+    :param current_user: the owner of the post
+    :return: None
     """
     user_id = current_user.id
     PostsServices.delete_post(repo, post_id, user_id)

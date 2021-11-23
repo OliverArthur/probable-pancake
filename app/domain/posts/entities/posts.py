@@ -30,7 +30,6 @@ class PostsPublished(PostsBase):
 
 class Posts(PostsBase):
     id: int
-    owner: Optional[User] = None
     created_at: Optional[datetime] = Field(None, alias="created_at")
     updated_at: Optional[datetime] = Field(None, alias="updated_at")
     published: bool = False
