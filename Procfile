@@ -1,0 +1,1 @@
+web: uvicorn app.infrastructure.framework.server:api_server --host=0.0.0.0 --port=${PORT:-5000}
