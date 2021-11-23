@@ -599,7 +599,7 @@ standard = ["websockets (>=9.1)", "httptools (>=0.2.0,<0.3.0)", "watchgod (>=0.6
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10"
-content-hash = "8c63241fc1848ad25729d0c63ec9021a20f91873b3e8f0ac7f26dbb0ea2758c8"
+content-hash = "0c5103f469dad5f9c04db5f1aee0354277bb7d575010c30941cb0c7e0acb95fb"
 
 [metadata.files]
 alembic = [
