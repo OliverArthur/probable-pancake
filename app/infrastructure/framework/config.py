@@ -1,7 +1,7 @@
-from typing import Callable
+from typing import Callable, List, Union
 
-from dotenv import dotenv_values
-from pydantic import BaseSettings, PostgresDsn
+from dotenv import dotenv_values, load_dotenv
+from pydantic import BaseSettings, PostgresDsn, AnyHttpUrl, validator
 
 env = dotenv_values(".env")
 
@@ -40,6 +40,23 @@ class Config(BaseSettings):
         f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
 
+    # cors settings
+    CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:8080", "http://localhost"]
+
+    @validator("CORS_ORIGINS", pre=True)
+    def assemble_cors_origins(
+        cls,
+        v: Union[str, List[str]],
+    ) -> Union[str, List[str]]:
+        """
+        This function is used to assemble the CORS origins.
+        """
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(f"CORS_ORIGINS setup validation error. {v}")
+
     # Token settings
     JWT_SECRET_KEY: str = env.get("JWT_SECRET_KEY")
 
@@ -60,7 +77,7 @@ def _configure_initial_settings() -> Callable[[], Config]:
     """
     This function is used to configure the initial settings of the application.
     """
-
+    load_dotenv()
     # Configure the application settings
     settings = Config()
 
