@@ -1,15 +1,26 @@
+from sqlalchemy.sql import func
+
 from app.domain.posts.entities.posts import Posts
 from app.infrastructure.database.models.posts import Posts as PostsModel
+from app.infrastructure.database.models.vote import Vote as VoteModel
 from app.infrastructure.database.sqlalchemy import db
 
 
 def fetch(id: int) -> Posts:
-    return db.query(PostsModel).filter(PostsModel.id == id).first()
+    return (
+        db.query(PostsModel, func.count(VoteModel.post_id).label("votes"))
+        .join(VoteModel, VoteModel.post_id == PostsModel.id, isouter=True)
+        .group_by(PostsModel.id)
+        .filter(PostsModel.id == id)
+        .first()
+    )
 
 
 def search(page: int, per_page: int, search: str = "") -> list:
     return (
-        db.query(PostsModel)
+        db.query(PostsModel, func.count(VoteModel.post_id).label("votes"))
+        .join(VoteModel, VoteModel.post_id == PostsModel.id, isouter=True)
+        .group_by(PostsModel.id)
         .filter(PostsModel.title.contains(search))
         .limit(per_page)
         .offset((page - 1) * per_page)

@@ -5,7 +5,12 @@ from fastapi.responses import JSONResponse
 
 from app.application.posts import PostsServices
 from app.domain.accounts.entities.user import UserCredentials
-from app.domain.posts.entities.posts import Posts, PostsCreate, PostsUpdate
+from app.domain.posts.entities.posts import (
+    Posts,
+    PostsCreate,
+    PostsInDBOut,
+    PostsUpdate,
+)
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
 
@@ -13,7 +18,11 @@ repo = get_dependencies().posts_repo
 router = APIRouter(default_response_class=JSONResponse)
 
 
-@router.get("/{post_id}", response_model=Posts, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{post_id}",
+    response_model=PostsInDBOut,
+    status_code=status.HTTP_200_OK,
+)
 def get_post(post_id: int):
     post = PostsServices.get_post(repo, post_id)
     if post is None:
@@ -23,7 +32,11 @@ def get_post(post_id: int):
     return post
 
 
-@router.get("/", response_model=List[Posts], status_code=status.HTTP_200_OK)
+@router.get(
+    "/",
+    response_model=List[PostsInDBOut],
+    status_code=status.HTTP_200_OK,
+)
 def get_posts(
     page: int = 1,
     per_page: int = 10,
