@@ -3,8 +3,12 @@ from app.infrastructure.database.models.vote import Vote as VoteModel
 from app.infrastructure.database.sqlalchemy import db
 
 
-def fetch(post_id: int) -> Vote:
-    return db.query(VoteModel).filter(VoteModel.post_id == post_id).first()
+def fetch(post_id: int, user_id: int) -> Vote:
+    return (
+        db.query(VoteModel)
+        .filter(VoteModel.post_id == post_id, VoteModel.user_id == user_id)
+        .first()
+    )
 
 
 def vote(user_id: int, post_id: int) -> None:
