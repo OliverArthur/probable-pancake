@@ -4,7 +4,7 @@ from app.domain.vote.entities.vote import Vote
 
 
 class IVoteRepo(Protocol):
-    async def fetch(self, post_id: int) -> Vote:
+    async def fetch(self, post_id: int, user_id: int) -> Vote:
         ...
 
     async def vote(

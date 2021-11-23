@@ -38,3 +38,11 @@ class Posts(PostsBase):
 
     class Config:
         orm_mode = True
+
+
+class PostsInDBOut(BaseModel):
+    Posts: Posts
+    votes: int
+
+    class Config:
+        orm_mode = True
