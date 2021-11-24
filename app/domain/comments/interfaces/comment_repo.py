@@ -1,7 +1,6 @@
 from typing import List, Protocol
 
-from app.domain.comments.entities.comments import (Comment, CommentCreate,
-                                                   CommentUpdate)
+from app.domain.comments.entities.comments import Comment, CommentCreate, CommentUpdate
 
 
 class ICommentRepo(Protocol):

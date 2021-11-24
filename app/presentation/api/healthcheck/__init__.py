@@ -1,7 +1,6 @@
 from fastapi.routing import APIRouter
 
-from app.presentation.api.healthcheck.status import \
-    router as healthcheck_router
+from app.presentation.api.healthcheck.status import router as healthcheck_router
 
 
 def _build_router():
