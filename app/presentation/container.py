@@ -4,11 +4,9 @@ from typing import Callable, cast
 from app.domain.accounts.interfaces import IUserRepo
 from app.domain.posts.interfaces import IPostsRepo
 from app.domain.vote.interfaces import IVoteRepo
-from app.infrastructure.database.repositories import (
-    posts_repository,
-    user_repository,
-    vote_repository,
-)
+from app.infrastructure.database.repositories import (posts_repository,
+                                                      user_repository,
+                                                      vote_repository)
 
 
 @dataclass(frozen=True)

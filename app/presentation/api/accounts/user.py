@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 
 from app.application.account import AccountServices
-from app.domain.accounts.entities.user import User, UserCredentials, UserUpdateMe
+from app.domain.accounts.entities.user import (User, UserCredentials,
+                                               UserUpdateMe)
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
 

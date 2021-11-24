@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from app.domain.posts.entities.posts import Posts, PostsUpdate, PostsCreate
+from app.domain.posts.entities.posts import Posts, PostsCreate, PostsUpdate
 
 
 class IPostsRepo(Protocol):
