@@ -87,21 +87,20 @@ class AccountServices(ABC):
         user_repo: IUserRepo,
         user_credentials: UserCredentials,
     ) -> User:
+        try:
+            email = user_credentials.email.lower()
+            password_hash = AuthenticationServices.hash_password(
+                user_credentials.password
+            )
+            new_user = user_repo.create(email, password_hash)
 
-        email = user_credentials.email.lower()
-        user = user_repo.fetch_by_email(email)
-
-        if user:
+        except (AttributeError, ValueError, TypeError, Exception) as e:
             raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="User already exists",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
             )
 
-        password_hash = AuthenticationServices.hash_password(user_credentials.password)
-
-        user = user_repo.create(email, password_hash)
-
-        return user
+        return new_user
 
     @classmethod
     def delete_user(cls, user_repo: IUserRepo, user_id: int) -> None:

@@ -9,7 +9,9 @@ class ITopicRepo(Protocol):
     Topic Repository Interface
     """
 
-    def get_all(self, page: int = 1, per_page: int = 10, search: str = "") -> List[Topic]:
+    def get_all(
+        self, page: int = 1, per_page: int = 10, search: str = ""
+    ) -> List[Topic]:
         """
         Get all topics
         """
@@ -21,7 +23,7 @@ class ITopicRepo(Protocol):
         """
         ...
 
-    def create(self, topic: TopicCreate) -> Topic:
+    def create(self, user_id: int, topic: TopicCreate) -> Topic:
         """
         Create new topic
         """
