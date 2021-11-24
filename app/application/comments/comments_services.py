@@ -1,8 +1,9 @@
 from abc import ABC
 
 from fastapi import HTTPException, status
-from app.domain.comments.interfaces.comment_repo import ICommentRepo
+
 from app.domain.comments.entities.comments import CommentCreate
+from app.domain.comments.interfaces.comment_repo import ICommentRepo
 
 
 class CommentsService(ABC):

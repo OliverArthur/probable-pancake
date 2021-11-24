@@ -5,12 +5,8 @@ from fastapi.responses import JSONResponse
 
 from app.application.posts import PostsServices
 from app.domain.accounts.entities.user import UserCredentials
-from app.domain.posts.entities.posts import (
-    Posts,
-    PostsCreate,
-    PostsInDBOut,
-    PostsUpdate,
-)
+from app.domain.posts.entities.posts import (Posts, PostsCreate, PostsInDBOut,
+                                             PostsUpdate)
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
 

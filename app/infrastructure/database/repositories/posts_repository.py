@@ -4,9 +4,10 @@ from fastapi import HTTPException, status
 from sqlalchemy.sql import func
 
 from app.domain.posts.entities.posts import Posts
+from app.infrastructure.database.models.comments import \
+    Comments as CommentsModel
 from app.infrastructure.database.models.posts import Posts as PostsModel
 from app.infrastructure.database.models.vote import Vote as VoteModel
-from app.infrastructure.database.models.comments import Comments as CommentsModel
 from app.infrastructure.database.sqlalchemy import db
 
 

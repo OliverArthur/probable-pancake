@@ -7,7 +7,6 @@ from app.domain.comments.entities.comments import Comment, CommentCreate
 from app.presentation.api.authentication.auth import get_current_user
 from app.presentation.container import get_dependencies
 
-
 repo = get_dependencies().comment_repo
 router = APIRouter(default_response_class=JSONResponse)
 

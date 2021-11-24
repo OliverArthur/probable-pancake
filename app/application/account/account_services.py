@@ -3,10 +3,10 @@ from typing import Optional
 
 from fastapi import HTTPException, status
 
-from app.application.authentication.authentication_services import (
-    AuthenticationServices,
-)
-from app.domain.accounts.entities.user import User, UserCredentials, UserUpdateMe
+from app.application.authentication.authentication_services import \
+    AuthenticationServices
+from app.domain.accounts.entities.user import (User, UserCredentials,
+                                               UserUpdateMe)
 from app.domain.accounts.interfaces.user_repo import IUserRepo
 
 

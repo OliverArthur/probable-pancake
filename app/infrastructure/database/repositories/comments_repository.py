@@ -5,7 +5,8 @@ from typing import List
 from fastapi import HTTPException, status
 
 from app.domain.comments.entities.comments import Comment, CommentCreate
-from app.infrastructure.database.models.comments import Comments as CommentModel
+from app.infrastructure.database.models.comments import \
+    Comments as CommentModel
 from app.infrastructure.database.sqlalchemy import db
 
 
