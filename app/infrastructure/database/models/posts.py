@@ -30,12 +30,20 @@ class Posts(Base):
         nullable=False,
     )
 
-    owner = relationship("User")
+    topic_id = Column(
+        Integer, ForeignKey("topics.id", ondelete="CASCADE"), nullable=False
+    )
 
-    def __init__(self, title, content, owner_id, published=False, image_url=None):
+    owner = relationship("User")
+    topic = relationship("Topic")
+
+    def __init__(
+        self, title, content, owner_id, topic_id, published=False, image_url=None
+    ):
         self.title = title
         self.content = content
         self.owner_id = owner_id
+        self.topic_id = topic_id
         self.published = published
         self.image_url = image_url
 

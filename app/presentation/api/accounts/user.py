@@ -12,18 +12,7 @@ router = APIRouter(default_response_class=JSONResponse)
 
 @router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
 def create_user(response: JSONResponse, credentials: UserCredentials):
-    try:
-        user = AccountServices.verify_user_by_credentials(repo, credentials)
-        if user:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Email already exists.",
-            )
-        return AccountServices.register_user(repo, credentials)
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request"
-        )
+    return AccountServices.register_user(repo, credentials)
 
 
 @router.put("/me", response_model=User, status_code=status.HTTP_200_OK)
@@ -32,13 +21,7 @@ def update_me(
     user: UserUpdateMe,
     current_user: UserCredentials = Depends(get_current_user),
 ):
-    try:
-        return AccountServices.update_me(repo, user, current_user)
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Bad request",
-        )
+    return AccountServices.update_me(repo, user, current_user)
 
 
 @router.get("/me", response_model=User, status_code=status.HTTP_200_OK)

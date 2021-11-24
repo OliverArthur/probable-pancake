@@ -6,6 +6,7 @@ from app.presentation.api import (
     healthcheck,
     posts,
     vote,
+    topic,
 )
 
 
@@ -18,4 +19,5 @@ def register_routers(app: FastAPI) -> None:
     app.include_router(authentication.router, prefix="/api/v1/authentication")
     app.include_router(posts.router, prefix="/api/v1/posts")
     app.include_router(vote.router, prefix="/api/v1/vote")
+    app.include_router(topic.router, prefix="/api/v1/topic")
     return app

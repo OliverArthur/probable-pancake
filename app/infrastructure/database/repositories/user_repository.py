@@ -31,12 +31,6 @@ def fetch_by_email(email: str) -> User:
 
 
 def create(email: EmailStr, password_hash: str) -> User:
-    if len(email) == 0 or len(password_hash) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email and password are required",
-        )
-
     values = {"email": email, "password": password_hash}
     user = UserModel(**values)
 
