@@ -13,12 +13,20 @@ from app.domain.accounts.interfaces.user_repo import IUserRepo
 class AccountServices(ABC):
     @classmethod
     def get_user_by_id(cls, user_repo: IUserRepo, user_id: int) -> User:
-        user = user_repo.fetch(user_id)
+        try:
 
-        if not user:
+            user = user_repo.fetch(user_id)
+
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"User with id: {user_id} not found",
+                )
+
+        except (AttributeError, ValueError, TypeError, Exception) as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"User with id: {user_id} not found",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
             )
 
         return user
@@ -31,14 +39,28 @@ class AccountServices(ABC):
     ) -> Optional[User]:
         user = user_repo.fetch_by_email(user_credentials.email.lower())
 
-        if not user:
-            return None
+        try:
 
-        password = user_credentials.password
-        password_hash = user.password
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found",
+                )
 
-        if not AuthenticationServices.verify_password(password, password_hash):
-            return None
+            password = user_credentials.password
+            password_hash = user.password
+
+            if not AuthenticationServices.verify_password(password, password_hash):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid credentials",
+                )
+
+        except (AttributeError, ValueError, TypeError, Exception) as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
+            )
 
         return user
 
