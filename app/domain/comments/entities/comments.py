@@ -2,20 +2,21 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
+from app.domain.accounts.entities.user import User
 
 
 class CommentBase(BaseModel):
-    user_id: int
     post_id: int
-    body: Optional[str] = None
+    body: str
 
 
 class CommentCreate(CommentBase):
-    body: str
+    pass
 
 
 class Comment(CommentBase):
     id: int
+    commented_by: Optional[User] = None
     created_at: Optional[datetime] = datetime.utcnow()
     updated_at: Optional[datetime] = None
 

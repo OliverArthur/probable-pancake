@@ -1,5 +1,4 @@
 from abc import ABC
-from operator import pos
 
 from fastapi import HTTPException, status
 

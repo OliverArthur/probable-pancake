@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 from app.domain.posts.entities.posts import Posts
 from app.infrastructure.database.models.posts import Posts as PostsModel
 from app.infrastructure.database.models.vote import Vote as VoteModel
+from app.infrastructure.database.models.comments import Comments as CommentsModel
 from app.infrastructure.database.sqlalchemy import db
 
 
@@ -13,7 +14,9 @@ def fetch(post_id: int) -> Posts:
     post = (
         db.query(PostsModel, func.count(VoteModel.post_id).label("votes"))
         .join(VoteModel, VoteModel.post_id == PostsModel.id, isouter=True)
+        .join(CommentsModel, CommentsModel.post_id == PostsModel.id, isouter=True)
         .group_by(PostsModel.id)
+        .group_by(CommentsModel.id)
         .filter(PostsModel.id == post_id)
         .first()
     )

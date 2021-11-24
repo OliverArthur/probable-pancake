@@ -38,7 +38,7 @@ def get_comments(
     return comments
 
 
-def create_comment(post_id: int, user_id: int, comment: CommentCreate) -> Comment:
+def create_comment(user_id: int, post_id: int, comment: CommentCreate) -> Comment:
     """
     Create new comment
 

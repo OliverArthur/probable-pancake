@@ -4,10 +4,12 @@ from typing import Callable, cast
 from app.domain.accounts.interfaces import IUserRepo
 from app.domain.posts.interfaces import IPostsRepo
 from app.domain.vote.interfaces import IVoteRepo
+from app.domain.comments.interfaces import ICommentRepo
 from app.infrastructure.database.repositories import (
     posts_repository,
     user_repository,
     vote_repository,
+    comments_repository,
 )
 
 
@@ -16,6 +18,7 @@ class Dependencies:
     user_repo: IUserRepo
     posts_repo: IPostsRepo
     vote_repo: IVoteRepo
+    comment_repo: ICommentRepo
 
 
 def _build_dependencies() -> Callable[[], Dependencies]:
@@ -23,6 +26,7 @@ def _build_dependencies() -> Callable[[], Dependencies]:
         user_repo=cast(IUserRepo, user_repository),
         posts_repo=cast(IPostsRepo, posts_repository),
         vote_repo=cast(IVoteRepo, vote_repository),
+        comment_repo=cast(ICommentRepo, comments_repository),
     )
 
     def fn() -> Dependencies:
