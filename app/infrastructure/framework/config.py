@@ -1,7 +1,7 @@
 from typing import Callable, List, Union
 
 from dotenv import dotenv_values, load_dotenv
-from pydantic import BaseSettings, PostgresDsn, AnyHttpUrl, validator
+from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn, validator
 
 env = dotenv_values(".env")
 
