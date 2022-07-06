@@ -29,7 +29,7 @@ black = {version = "21.10b0", allow-prereleases = false}
 flake8 = {version = "3.7.7", allow-prereleases = false}
 mypy = {version = "0.761", allow-prereleases = false}
 isort = {version = "5.10.1", allow-prereleases = false}
-lxml = {version = "4.6.4", allow-prereleases = false}
+lxml = {version = "4.9.1", allow-prereleases = false}
 
 [tool.poetry.scripts]
 run-server = "scripts:server"
